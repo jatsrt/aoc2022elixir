@@ -4,20 +4,24 @@ defmodule Aoc2022elixir.Day02 do
   def run(contents) do
     strategy = contents |> String.split("\n")
 
-    result = strategy |> Enum.reduce(0, &solution(&1, &2, true))
+    result = strategy |> Enum.reduce(0, &solution(&1, &2, 0))
     Logger.info("solved", solution: result, part: :one)
 
-    result = strategy |> Enum.reduce(0, &solution(&1, &2, false))
+    result = strategy |> Enum.reduce(0, &solution(&1, &2, 1))
     Logger.info("solved", solution: result, part: :two)
   end
 
-  defp solution("A X", acc, tgl), do: if(tgl, do: 4, else: 3) + acc
-  defp solution("A Y", acc, tgl), do: if(tgl, do: 8, else: 4) + acc
-  defp solution("A Z", acc, tgl), do: if(tgl, do: 3, else: 8) + acc
-  defp solution("B X", acc, tgl), do: if(tgl, do: 1, else: 1) + acc
-  defp solution("B Y", acc, tgl), do: if(tgl, do: 5, else: 5) + acc
-  defp solution("B Z", acc, tgl), do: if(tgl, do: 9, else: 9) + acc
-  defp solution("C X", acc, tgl), do: if(tgl, do: 7, else: 2) + acc
-  defp solution("C Y", acc, tgl), do: if(tgl, do: 2, else: 6) + acc
-  defp solution("C Z", acc, tgl), do: if(tgl, do: 6, else: 7) + acc
+  @values %{
+    "A X" => {4, 3},
+    "A Y" => {8, 4},
+    "A Z" => {3, 8},
+    "B X" => {1, 1},
+    "B Y" => {5, 5},
+    "B Z" => {9, 9},
+    "C X" => {7, 2},
+    "C Y" => {2, 6},
+    "C Z" => {6, 7}
+  }
+
+  defp solution(key, acc, i), do: elem(Map.get(@values, key), i) + acc
 end
