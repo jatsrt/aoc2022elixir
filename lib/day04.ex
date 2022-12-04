@@ -3,10 +3,8 @@ defmodule Aoc2022elixir.Day04 do
 
   def run(contents) do
     overlaps =
-      String.split(contents, "\n")
-      |> Enum.map(fn pair ->
-        String.split(pair, ",")
-        |> Enum.map(fn area ->
+      Enum.map(String.split(contents, "\n"), fn pair ->
+        Enum.map(String.split(pair, ","), fn area ->
           [s, e] = String.split(area, "-") |> Enum.map(&String.to_integer/1)
           MapSet.new(s..e)
         end)
@@ -15,14 +13,10 @@ defmodule Aoc2022elixir.Day04 do
         {MapSet.size(MapSet.intersection(x, y)), min(MapSet.size(x), MapSet.size(y))}
       end)
 
-    solution =
-      Enum.reduce(overlaps, 0, fn {count, min}, acc -> if count >= min, do: acc + 1, else: acc end)
-
+    solution = Enum.count(overlaps, fn {count, min} -> count >= min end)
     Logger.info("solved", solution: solution, part: :one)
 
-    solution =
-      Enum.reduce(overlaps, 0, fn {count, _}, acc -> if count > 0, do: acc + 1, else: acc end)
-
+    solution = Enum.count(overlaps, fn {count, _} -> count > 0 end)
     Logger.info("solved", solution: solution, part: :two)
   end
 end
