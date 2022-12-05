@@ -26,15 +26,15 @@ defmodule Aoc2022elixir.Day05 do
       |> Enum.map(&String.split(&1, " "))
       |> Enum.map(fn move ->
         %{
-          c: Enum.at(move, 1) |> String.to_integer(),
-          f: Enum.at(move, 3) |> String.to_integer(),
-          t: Enum.at(move, 5) |> String.to_integer()
+          count: Enum.at(move, 1) |> String.to_integer(),
+          from: Enum.at(move, 3) |> String.to_integer(),
+          to: Enum.at(move, 5) |> String.to_integer()
         }
       end)
 
     solution =
       moves
-      |> Enum.reduce(stacks, &ms9000/2)
+      |> Enum.reduce(stacks, &mover9000/2)
       |> Enum.map(fn {_, [v | _]} -> v end)
       |> Enum.join("")
 
@@ -42,29 +42,31 @@ defmodule Aoc2022elixir.Day05 do
 
     solution =
       moves
-      |> Enum.reduce(stacks, &ms9001/2)
+      |> Enum.reduce(stacks, &mover9001/2)
       |> Enum.map(fn {_, [v | _]} -> v end)
       |> Enum.join("")
 
     Logger.info("solved", solution: solution, part: :two)
   end
 
-  defp ms9000(%{c: 0}, stacks), do: stacks
-  defp ms9000(%{c: c, f: f, t: t} = m, stacks), do: ms9000(%{m | c: c - 1}, m9000(stacks, f, t))
+  defp mover9000(%{count: 0}, stacks), do: stacks
 
-  defp m9000(stacks, f, t) do
-    [item | from_rest] = Map.get(stacks, f)
+  defp mover9000(%{count: count, from: from, to: to} = move, stacks) do
+    [crate | remainder_crates] = Map.get(stacks, from)
 
-    stacks
-    |> Map.put(t, [item | Map.get(stacks, t)])
-    |> Map.put(f, from_rest)
+    mover9000(
+      %{move | count: count - 1},
+      stacks
+      |> Map.put(to, [crate | Map.get(stacks, to)])
+      |> Map.put(from, remainder_crates)
+    )
   end
 
-  defp ms9001(%{c: c, f: f, t: t}, stacks) do
-    {items, from_rest} = stacks |> Map.get(f) |> Enum.split(c)
+  defp mover9001(%{count: count, from: from, to: to}, stacks) do
+    {crates, remainder_crates} = stacks |> Map.get(from) |> Enum.split(count)
 
     stacks
-    |> Map.put(t, Enum.concat(items, Map.get(stacks, t)))
-    |> Map.put(f, from_rest)
+    |> Map.put(to, Enum.concat(crates, Map.get(stacks, to)))
+    |> Map.put(from, remainder_crates)
   end
 end
