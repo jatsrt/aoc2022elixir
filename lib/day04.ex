@@ -13,10 +13,10 @@ defmodule Aoc2022elixir.Day04 do
         {MapSet.size(MapSet.intersection(x, y)), min(MapSet.size(x), MapSet.size(y))}
       end)
 
-    solution = Enum.count(overlaps, fn {count, min} -> count >= min end)
+    solution = Enum.count(overlaps, fn {count, min} -> count == min end)
     Logger.info("solved", solution: solution, part: :one)
 
-    solution = Enum.count(overlaps, fn {count, _} -> count > 0 end)
+    solution = Enum.count(overlaps, fn {count, _} -> count != 0 end)
     Logger.info("solved", solution: solution, part: :two)
   end
 end
