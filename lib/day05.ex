@@ -8,16 +8,11 @@ defmodule Aoc2022elixir.Day05 do
     stacks =
       raw_stacks
       |> Enum.map(fn row ->
-        row
-        |> String.codepoints()
-        |> Enum.chunk_every(4)
-        |> Enum.map(&Enum.join/1)
-        |> Enum.map(&String.trim/1)
-        |> Enum.map(&String.replace(&1, ["[", "]"], ""))
+        row |> String.codepoints() |> Enum.chunk_every(4) |> Enum.map(&Enum.at(&1, 1))
       end)
       |> List.zip()
       |> Enum.map(&Tuple.to_list/1)
-      |> Enum.map(&Enum.filter(&1, fn i -> i != "" end))
+      |> Enum.map(&Enum.filter(&1, fn i -> i != " " end))
       |> Stream.with_index(1)
       |> Enum.reduce(%{}, fn {v, k}, acc -> Map.put(acc, k, v) end)
 
