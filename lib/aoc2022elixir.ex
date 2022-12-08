@@ -11,6 +11,7 @@ defmodule Aoc2022elixir do
     run_aoc_day(6)
     run_aoc_day(7)
     run_aoc_day(8)
+    run_aoc_day(9)
   end
 
   defp run_aoc_day(day) do
@@ -34,5 +35,6 @@ defmodule Aoc2022elixir do
   defp run_aoc_day(5, input), do: Aoc2022elixir.Day05.run(input)
   defp run_aoc_day(6, input), do: Aoc2022elixir.Day06.run(input)
   defp run_aoc_day(7, input), do: Aoc2022elixir.Day07.run(input)
+  defp run_aoc_day(8, input), do: Aoc2022elixir.Day08.run(input)
   defp run_aoc_day(_, _), do: Logger.info("no-day")
 end
